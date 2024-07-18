@@ -39,7 +39,7 @@ exports.register = async (req, res) => {
             to: req.body.email,
             subject: 'Confirmation Email',
             text: 'Thank you for registering. Your account has been successfully created.',
-            html: `<p>Thank you for registering. Please click <a href="${process.env.BASE_URL}confirm/${token}">here</a> to confirm your email address.</p>`
+            html: `<p>Thank you for registering. Please click <a href="${process.env.BASE_URL}api/confirm/${token}">here</a> to confirm your email address.</p>`
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -102,3 +102,5 @@ exports.login =async (req, res) => {
          res.status(500).json({ message: 'Internal server error' });
      }
   };
+
+  /////google auth

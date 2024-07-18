@@ -19,7 +19,7 @@ const adminSchema = new Schema({
   },
   password: {
     type: String,
-    require: true,
+    require: false,
 },
   name: { type: String, required: true },
   surname: { type: String },
