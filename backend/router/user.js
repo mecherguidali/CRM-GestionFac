@@ -102,7 +102,7 @@ router.post('/register',async (req,res)=>{
          }
   
          // Generate JWT
-         const token = jwt.sign({ userId: userData.id, email: userData.email,role:userData.role },process.env.JWT_SECRET);
+         const token = jwt.sign({ name: userData.name ,userId: userData.id, email: userData.email,role:userData.role},process.env.JWT_SECRET);
   
          // Send JWT to client
          res.status(200).json({ token });

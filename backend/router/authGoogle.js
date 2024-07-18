@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const passport = require("passport");
+const jwt = require('jsonwebtoken');
 router.get("/login/success", (req, res) => {
 	if (req.user) {
-		res.status(200).json({
-			error: false,
-			message: "Successfully Loged In",
-			user: req.user,
-		});
+        console.log(req.user.email)
+    const token = jwt.sign({ name: req.user.name ,userId: req.user.id, email: req.user.email,role:req.user.role},process.env.JWT_SECRET);
+		res.status(200).json({ token });
 	} else {
 		res.status(403).json({ error: true, message: "Not Authorized" });
 	}

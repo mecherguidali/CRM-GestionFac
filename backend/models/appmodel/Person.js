@@ -9,6 +9,10 @@ const personSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    createdby: {
+        type: String,
+        required: true
+    },
     entreprise: String,
     pays: String,
     telephone: String,
