@@ -9,10 +9,14 @@ const personSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    createdby: {
+    createdBy: {
         type: String,
         required: true
     },
+    created: {
+        type: Date,
+        default: Date.now,
+      },
     entreprise: String,
     pays: String,
     telephone: String,

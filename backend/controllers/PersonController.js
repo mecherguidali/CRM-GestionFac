@@ -2,7 +2,7 @@ const Person = require('../models/appmodel/Person');
 
 // Create a new person
 exports.createPerson = async (req, res) => {
-    const { prenom, nom, entreprise, pays, telephone, email } = req.body;
+    const { prenom, nom, entreprise, pays, telephone, email,createdBy} = req.body;
 
     const newPerson = new Person({
         prenom,
@@ -10,7 +10,8 @@ exports.createPerson = async (req, res) => {
         entreprise,
         pays,
         telephone,
-        email
+        email,
+        createdBy
     });
 
     try {
@@ -24,7 +25,18 @@ exports.createPerson = async (req, res) => {
 // Get all people
 exports.getAllPeople = async (req, res) => {
     try {
+
         const people = await Person.find();
+        res.status(200).json(people);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+exports.getAll = async (req, res) => {
+    try {
+        console.log(req.body.createdBy)
+        adminId=req.body.createdBy
+        const people = await Person.find({createdBy: adminId});
         res.status(200).json(people);
     } catch (error) {
         res.status(400).json({ error: error.message });
