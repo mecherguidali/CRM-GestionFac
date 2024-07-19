@@ -7,4 +7,5 @@ router.get('/confirm/:token', adminController.confirmEmail);
 router.post('/login', adminController.login);
 router.post('/sendotp', adminController.sendotp);
 router.post('/resetpassword', adminController.resetpassword);
+router.post('/verfieropt', adminController.verfierOTP);
 module.exports = router;

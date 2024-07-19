@@ -150,16 +150,21 @@ exports.login =async (req, res) => {
       });
     }
     exports.resetpassword = async (req, res) => {
-        const { email, otp, newpassword } = req.body;
+        const { email, newpassword } = req.body;
         const user = await Admin.findOne({ email });
-      
-        if (!user || user.otp !== otp || Date.now() > user.otpExpires) {
-          return res.status(400).json({error: 'Invalid or expired OTP'});
-        }
-      
         user.password = newpassword;
         user.otp = undefined;
         user.otpExpires = undefined;    
         await user.save();
         res.status(500).json({message : 'Password has been reset'});
+      }
+      exports.verfierOTP = async (req, res) => {
+        const { email, otp } = req.body;
+        const user = await Admin.findOne({ email });
+      
+        if (!user || user.otp !== otp || Date.now() > user.otpExpires) {
+          return res.status(400).json({error: 'Invalid or expired OTP'});
+        }
+    
+        res.status(200).json({message : 'otp is correct'});
       }
