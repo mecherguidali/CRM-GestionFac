@@ -36,12 +36,22 @@ const adminSchema = new Schema({
     default: 'owner',
     enum: ['owner'],
   },
+  otp: {
+    type: String,
+  },
+  otpExpires: {
+    type: Date,
+  },
+  lastOtpRequest: {
+    type: Date,
+  },
 });
-adminSchema.pre('save',async function(next){
-  const user =this;
-  if(user.isModified('password')){
-    user.password = await bcrypt.hash(user.password,10)
-  } 
+adminSchema.pre('save', async function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, 10); // Await the hash function
+  }
+  next();
 });
 
 module.exports = mongoose.model('Admin', adminSchema);
