@@ -17,7 +17,7 @@ const personSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
-    entreprise: String,
+    entreprise: { type: mongoose.Schema.ObjectId, ref: 'Entreprise', autopopulate: true },
     pays: String,
     telephone: String,
     email: String
