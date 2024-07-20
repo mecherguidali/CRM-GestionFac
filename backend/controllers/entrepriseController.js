@@ -31,6 +31,17 @@ exports.getEntreprises = async (req, res) => {
     res.status(500).json({ message: 'Error fetching entreprises', error });
   }
 };
+exports.getAllbyadmin = async (req, res) => {
+    try {
+        console.log(req.body.createdBy)
+        adminId=req.body.createdBy
+        const entreprises = await Entreprise.find({createdBy: adminId});
+        res.status(200).json(entreprises);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 exports.getAll = async (req, res) => {
     try {
         console.log(req.body.createdBy)
@@ -52,7 +63,7 @@ exports.getEntrepriseById = async (req, res) => {
 
     res.status(200).json(entreprise);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching entreprise', error });
+    res.status(500).json({ message: 'Error fetching entreprise', error});
   }
 };
 
