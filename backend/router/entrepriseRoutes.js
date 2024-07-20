@@ -7,7 +7,7 @@ router.post('/', entrepriseController.createEntreprise);
 
 // Get all entreprises
 router.get('/', entrepriseController.getEntreprises);
-
+router.get('/byadmin', entrepriseController.getAll);
 // Get a single entreprise by ID
 router.get('/:id', entrepriseController.getEntrepriseById);
 
