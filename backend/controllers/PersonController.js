@@ -25,7 +25,6 @@ exports.createPerson = async (req, res) => {
 // Get all people
 exports.getAllPeople = async (req, res) => {
     try {
-
         const people = await Person.find();
         res.status(200).json(people);
     } catch (error) {
@@ -35,7 +34,7 @@ exports.getAllPeople = async (req, res) => {
 exports.getAll = async (req, res) => {
     try {
         console.log(req.body.createdBy)
-        adminId=req.body.createdBy
+        adminId = req.body.createdBy
         const people = await Person.find({createdBy: adminId});
         res.status(200).json(people);
     } catch (error) {

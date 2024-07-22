@@ -18,6 +18,10 @@ const personSchema = new mongoose.Schema({
         default: Date.now,
       },
     entreprise: { type: mongoose.Schema.ObjectId, ref: 'Entreprise', autopopulate: true },
+    isClient: {
+        type: Boolean,
+        default: false,
+      },
     pays: String,
     telephone: String,
     email: String

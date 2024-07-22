@@ -9,6 +9,7 @@ const adminRouter=require('./router/adminRoutes.js')
 const authRouteGoogle=require('./router/authGoogle.js')
 const personRouter=require('./router/personRoutes.js')
 const entrepriseRouter=require('./router/entrepriseRoutes.js')
+const clientRouter=require('./router/clientRoutes.js')
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 var cors = require('cors');
@@ -39,5 +40,6 @@ app.use('/api/',adminRouter);
 app.use('/api/user/',userRouter);
 app.use('/api/people/',personRouter);
 app.use('/api/entreprise/',entrepriseRouter);
+app.use('/api/client/',clientRouter);
 app.use("/auth", authRouteGoogle);
 

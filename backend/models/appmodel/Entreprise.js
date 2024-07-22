@@ -29,6 +29,10 @@ created: {
     type: Date,
     default: Date.now,
   },
+  isClient: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Create and export the model

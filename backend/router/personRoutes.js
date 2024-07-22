@@ -6,7 +6,7 @@ const personController = require('../controllers/PersonController');
 router.post('/', personController.createPerson);
 
 // Get all people
-router.get('/', personController.getAll);
+router.get('/', personController.getAllPeople);
 router.get('/byadmin', personController.getAll);
 // Get a person by ID
 router.get('/:id', personController.getPersonById);

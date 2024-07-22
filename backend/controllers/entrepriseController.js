@@ -42,16 +42,6 @@ exports.getAllbyadmin = async (req, res) => {
     }
 };
 
-exports.getAll = async (req, res) => {
-    try {
-        console.log(req.body.createdBy)
-        adminId=req.body.createdBy
-        const entreprises = await Entreprise.find({createdBy: adminId});
-        res.status(200).json(entreprises);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
 
 // Get a single entreprise by ID
 exports.getEntrepriseById = async (req, res) => {
