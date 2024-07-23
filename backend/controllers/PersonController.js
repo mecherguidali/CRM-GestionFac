@@ -42,6 +42,8 @@ exports.getAll = async (req, res) => {
     }
 };
 
+
+
 // Get a person by ID
 exports.getPersonById = async (req, res) => {
     try {

@@ -30,12 +30,41 @@ exports.createClient = async (req, res) => {
 // Get all clients
 exports.getClients = async (req, res) => {
     try {
-        console.log(req.body.createdBy)
-        adminId=req.body.createdBy
+        //console.log(req.body.createdBy)
+        const adminId = req.query.createdBy;
         const clients = await Client.find({createdBy: adminId}).populate('entreprise').populate('person');
         res.status(200).json(clients);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching clients', error });
+    }
+};
+
+
+exports.getPerson_no_Client = async (req, res) => {
+    try {
+      //  console.log(req.query.createdBy)
+        adminId = req.query.createdBy
+        const people = await Person.find({
+            isClient:false,
+            createdBy: adminId});
+        console.log(`Found people: ${JSON.stringify(people)}`);
+        res.status(200).json(people);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+exports.getEntreprise_no_Client = async (req, res) => {
+    try {
+       // console.log(req.query.createdBy)
+        adminId = req.query.createdBy
+        const entreprises = await Entreprise.find({
+            createdBy: adminId, 
+            isClient:false});
+        console.log(`Found people: ${JSON.stringify(entreprises)}`);
+        res.status(200).json(entreprises);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 };
 
