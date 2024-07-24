@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const multer = require('multer');
+const path = require('path');
 exports.register = async (req, res) => {
     try {
         const existingAdmin = await Admin.findOne({ email: req.body.email });
@@ -168,3 +170,57 @@ exports.login =async (req, res) => {
     
         res.status(200).json({message : 'otp is correct'});
       }
+
+
+      ////upadte admin
+      exports.updateAdmsin = async (req, res) => {
+        console.log(req.params.id)
+        const { adminId } = req.params.id; // Assuming admin ID is passed as a URL parameter
+        const { name, surname, password } = req.body;
+      
+        try {
+          // Prepare the update data
+          let updateData = { name, surname, password };
+          if (req.file) {
+        
+            const normalizedPath = req.file.path.replace(/\\/g, '/');
+            updateData.photo = env.process.BASE_URL+normalizedPath; 
+            // Store the file path in the database
+          }
+          // Find admin by ID and update
+          const admin = await Admin.find(
+            adminId
+          );
+          console.log(admin)
+          console.log(admin)
+
+          if (!admin) {
+            return res.status(404).json({ message: 'Admin not found' });
+          }
+      
+          res.status(200).json({ message: 'Admin updated successfully', admin });
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: 'Server error', error });
+        }
+      };
+
+      exports.updateAdmin = async (req, res) => {
+
+        const {name, surname, password } = req.body;
+        try {
+            let updateData = { name, surname, password };
+            if (req.file) {
+                updateData.photo = req.file.path;
+                console.log(req.file.path);
+              }
+            const admin = await Admin.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
+            
+            if (!admin) {
+                return res.status(404).json({ error: 'Person not found' });
+            }
+            res.status(200).json(admin);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    };

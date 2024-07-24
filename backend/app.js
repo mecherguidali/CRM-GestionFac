@@ -42,4 +42,4 @@ app.use('/api/people/',personRouter);
 app.use('/api/entreprise/',entrepriseRouter);
 app.use('/api/client/',clientRouter);
 app.use("/auth", authRouteGoogle);
-
+app.use("/uploads", express.static("uploads"));
