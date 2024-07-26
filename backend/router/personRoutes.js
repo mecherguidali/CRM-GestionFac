@@ -4,7 +4,6 @@ const personController = require('../controllers/PersonController');
 
 // Create a new person
 router.post('/', personController.createPerson);
-
 // Get all people
 router.get('/', personController.getAllPeople);
 router.get('/byadmin', personController.getAll);
