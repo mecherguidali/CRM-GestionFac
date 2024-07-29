@@ -207,17 +207,20 @@ exports.login =async (req, res) => {
 
       exports.updateAdmin = async (req, res) => {
 
-        const {name, surname, password } = req.body;
+        const {name, surname, password} = req.body;
+        console.log(req.body.name)
         try {
             let updateData = { name, surname, password };
+            updateData.password = await bcrypt.hash(password, 10);
             if (req.file) {
+             
                 updateData.photo = req.file.path;
                 console.log(req.file.path);
               }
             const admin = await Admin.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
-            
+            console.log(admin)
             if (!admin) {
-                return res.status(404).json({ error: 'Person not found' });
+                return res.status(404).json({ error: 'admin not found' });
             }
             res.status(200).json(admin);
         } catch (error) {

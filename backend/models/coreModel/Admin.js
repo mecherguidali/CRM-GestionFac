@@ -53,6 +53,13 @@ adminSchema.pre('save', async function (next) {
   }
   next();
 });
+adminSchema.pre('save', async function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, 10); // Await the hash function
+  }
+  next();
+});
 
 
 
