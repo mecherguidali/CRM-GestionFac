@@ -158,7 +158,7 @@ exports.login =async (req, res) => {
         user.otp = undefined;
         user.otpExpires = undefined;    
         await user.save();
-        res.status(500).json({message : 'Password has been reset'});
+        res.status(200).json({message : 'Password has been reset'});
       }
       exports.verfierOTP = async (req, res) => {
         const { email, otp } = req.body;
@@ -211,7 +211,9 @@ exports.login =async (req, res) => {
         console.log(req.body.name)
         try {
             let updateData = { name, surname, password };
-            updateData.password = await bcrypt.hash(password, 10);
+            if(password){
+              updateData.password = await bcrypt.hash(password, 10);
+            }
             if (req.file) {
              
                 updateData.photo = req.file.path;
