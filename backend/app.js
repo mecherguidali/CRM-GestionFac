@@ -11,6 +11,8 @@ const personRouter=require('./router/personRoutes.js')
 const entrepriseRouter=require('./router/entrepriseRoutes.js')
 const clientRouter=require('./router/clientRoutes.js')
 const ProductCategory=require('./router/ProductCategoryRoutes.js')
+const Product=require('./router/ProductRoutes.js')
+const depenseCategoryRoutes = require('./router/DepenseRoutes.js');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 var cors = require('cors');
@@ -43,5 +45,7 @@ app.use('/api/people/',personRouter);
 app.use('/api/entreprise/',entrepriseRouter);
 app.use('/api/client/',clientRouter);
 app.use('/api/category/',ProductCategory);
+app.use('/api/product/',Product);
 app.use("/auth", authRouteGoogle);
 app.use("/uploads", express.static("uploads"));
+app.use('/api/depense-categories', depenseCategoryRoutes);

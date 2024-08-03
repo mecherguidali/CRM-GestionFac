@@ -1,3 +1,4 @@
+const Product = require('../models/appmodel/Product');
 const ProductCategory = require('../models/appmodel/ProductCategory');
 
 // Create a new product category
@@ -69,6 +70,16 @@ exports.deleteProductCategory = async (req, res) => {
   const { id } = req.params;
 
   try {
+
+      // Check if there are products associated with this category
+      const products = await Product.find({ productCategory: id });
+
+      if (products.length > 0) {
+        return res.status(400).json({
+          message: 'Cannot delete category as it is associated with one or more products.'
+        });
+      }
+
     const category = await ProductCategory.findByIdAndUpdate(
       id,
       { removed: true },
