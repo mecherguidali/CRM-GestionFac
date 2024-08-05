@@ -1,5 +1,5 @@
-const DepenseCategory = require('../models/appmodel/Depense');
-
+const DepenseCategory = require('../models/appmodel/DepenseCategory');
+const Depense = require('../models/appmodel/Depense');
 // Create a new depense category
 exports.createDepenseCategory = async (req, res) => {
   const { name, description, color, createdBy } = req.body;
@@ -71,14 +71,16 @@ exports.deleteDepenseCategory = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const Depenses = await Depense.find({ depenseCategory: id });
+    if (Depenses.length > 0) {
+      return res.status(400).json({
+        message: 'Cannot delete category as it is associated with one or more Depenses.'
+      });
+    }
     const category = await DepenseCategory.findByIdAndUpdate(
-      id,
-      { removed: true },
-      { new: true }
+      id
     );
-
     if (!category) return res.status(404).json({ message: 'Depense category not found' });
-
     res.status(200).json({ message: 'Depense category removed successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error removing depense category', error });

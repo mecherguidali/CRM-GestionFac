@@ -1,34 +1,44 @@
 const mongoose = require('mongoose');
 
-const DepenseCategorySchema = new mongoose.Schema({
-  removed: {
-    type: Boolean,
-    default: false,
-  },
-  enabled: {
-    type: Boolean,
-    default: true,
-  },
-
+const DepenseSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  description: String,
-  color: {
-    type: String,
-    lowercase: true,
-    trim: true,
+  depenseCategory: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'DepenseCategory',
     required: true,
+    autopopulate: true,
   },
   createdBy: {
     type: String,
     required: true
 },
+  currency: {
+    type: String,
+    required: true,
+    enum: ['USD', 'EUR', 'GBP', 'JPY', 'CNY', 'INR'], // List of allowed currencies
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  reference: {
+    type: String,
+    required: false,
+  },
   created: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model('DepenseCategory', DepenseCategorySchema);
+
+
+const Product = mongoose.model('Depense', DepenseSchema);
+module.exports = Product;

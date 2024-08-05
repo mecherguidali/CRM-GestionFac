@@ -3,16 +3,18 @@ const mongoose = require('mongoose');
 const app  = express();
 require('./config/database.js')
 require('./config/passportGoogleAth.js')
-const userRouter=require('./router/user.js')
+const userRouter=require('./routes/user.js')
 const Admin = require('./models/coreModel/admin.js'); // Adjust the path as necessary
-const adminRouter=require('./router/adminRoutes.js')
-const authRouteGoogle=require('./router/authGoogle.js')
-const personRouter=require('./router/personRoutes.js')
-const entrepriseRouter=require('./router/entrepriseRoutes.js')
-const clientRouter=require('./router/clientRoutes.js')
-const ProductCategory=require('./router/ProductCategoryRoutes.js')
-const Product=require('./router/ProductRoutes.js')
-const depenseCategoryRoutes = require('./router/DepenseRoutes.js');
+const adminRouter=require('./routes/adminRoutes.js')
+const authRouteGoogle=require('./routes/authGoogle.js')
+const personRouter=require('./routes/personRoutes.js')
+const entrepriseRouter=require('./routes/entrepriseRoutes.js')
+const clientRouter=require('./routes/clientRoutes.js')
+const ProductCategory=require('./routes/ProductCategoryRoutes.js')
+const Product=require('./routes/ProductRoutes.js')
+const depenseCategoryRoutes = require('./routes/DepenseCategoryRoutes.js');
+const Depense = require('./routes/DepenseRoutes.js');
+const Currency = require('./routes/currencyRoutes.js');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 var cors = require('cors');
@@ -49,3 +51,5 @@ app.use('/api/product/',Product);
 app.use("/auth", authRouteGoogle);
 app.use("/uploads", express.static("uploads"));
 app.use('/api/depense-categories', depenseCategoryRoutes);
+app.use('/api/depense', Depense);
+app.use('/api/currency', Currency);
