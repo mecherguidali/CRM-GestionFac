@@ -15,6 +15,8 @@ const Product=require('./routes/ProductRoutes.js')
 const depenseCategoryRoutes = require('./routes/DepenseCategoryRoutes.js');
 const Depense = require('./routes/DepenseRoutes.js');
 const Currency = require('./routes/currencyRoutes.js');
+const taxRoutes = require('./routes/TaxeRoutes.js');
+const companySettingRoutes = require('./routes/EntrepriseSettingRoutes.js');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 var cors = require('cors');
@@ -53,3 +55,5 @@ app.use("/uploads", express.static("uploads"));
 app.use('/api/depense-categories', depenseCategoryRoutes);
 app.use('/api/depense', Depense);
 app.use('/api/currency', Currency);
+app.use('/api/companysetting', companySettingRoutes);
+app.use('/api/taxes', taxRoutes);
