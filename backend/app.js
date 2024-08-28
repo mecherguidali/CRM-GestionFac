@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const app  = express();
 require('./config/database.js')
 require('./config/passportGoogleAth.js')
-const userRouter=require('./routes/user.js')
 const Admin = require('./models/coreModel/admin.js'); // Adjust the path as necessary
 const adminRouter=require('./routes/adminRoutes.js')
 const authRouteGoogle=require('./routes/authGoogle.js')
@@ -17,6 +16,7 @@ const Depense = require('./routes/DepenseRoutes.js');
 const Currency = require('./routes/currencyRoutes.js');
 const taxRoutes = require('./routes/TaxeRoutes.js');
 const companySettingRoutes = require('./routes/EntrepriseSettingRoutes.js');
+const invoiceRoutes = require('./routes/invoiceRoutes');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 var cors = require('cors');
@@ -44,7 +44,6 @@ app.listen(process.env.PORT,()=>{
     console.log(`server is running in port ${process.env.PORT}`);
 })
 app.use('/api/',adminRouter);
-app.use('/api/user/',userRouter);
 app.use('/api/people/',personRouter);
 app.use('/api/entreprise/',entrepriseRouter);
 app.use('/api/client/',clientRouter);
@@ -57,3 +56,4 @@ app.use('/api/depense', Depense);
 app.use('/api/currency', Currency);
 app.use('/api/companysetting', companySettingRoutes);
 app.use('/api/taxes', taxRoutes);
+app.use('/api/invoices', invoiceRoutes);
