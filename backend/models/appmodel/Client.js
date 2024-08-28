@@ -18,6 +18,7 @@ created: {
     default: Date.now,
   },
 });
+clientSchema.plugin(require('mongoose-autopopulate'));
 
 // Create and export the model
 const Client = mongoose.model('Client', clientSchema);

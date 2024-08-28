@@ -17,4 +17,7 @@ router.put('/:id', invoiceController.updateInvoice);
 // Delete an invoice by ID
 router.delete('/:id', invoiceController.deleteInvoice);
 
+// Route to generate PDF for an invoice
+router.get('/export-pdf/:id/:createdBy', invoiceController.generateInvoicePDF);
+
 module.exports = router;
