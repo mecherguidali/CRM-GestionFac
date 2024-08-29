@@ -61,6 +61,7 @@ exports.getCompanyByCreatedBy = async (req, res) => {
               taxNumber: '11111333333',
               vatNumber: '33333333333',
               registrationNumber: '3333333333',
+              logo:""
             },
           };
         return res.status(404).json(defaultSettings);

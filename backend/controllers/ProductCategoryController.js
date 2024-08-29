@@ -80,10 +80,8 @@ exports.deleteProductCategory = async (req, res) => {
         });
       }
 
-    const category = await ProductCategory.findByIdAndUpdate(
-      id,
-      { removed: true },
-      { new: true }
+    const category = await ProductCategory.findByIdAndDelete(
+      id
     );
 
     if (!category) return res.status(404).json({ message: 'Product category not found' });

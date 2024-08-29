@@ -53,6 +53,7 @@ const companySchema = new mongoose.Schema({
   logo: {
     type: String,
     required: false,
+    default:null
   },
 });
 

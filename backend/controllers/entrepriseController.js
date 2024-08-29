@@ -83,9 +83,8 @@ exports.deleteEntreprise = async (req, res) => {
 
   try {
     const deletedEntreprise = await Entreprise.findByIdAndDelete(id);
-
     if (!deletedEntreprise) return res.status(404).json({ message: 'Entreprise not found' });
-
+    if (deletedEntreprise.isClient) return res.status(404).json({ message: 'Entreprise is Client can not deleted' });
     res.status(200).json({ message: 'Entreprise deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting entreprise', error });

@@ -77,6 +77,8 @@ exports.deletePersonById = async (req, res) => {
         if (!person) {
             return res.status(404).json({ error: 'Person not found' });
         }
+        if (person.isClient) return res.status(404).json({ message: 'person is Client can not deleted' });
+
         res.status(200).json({ message: 'Person deleted successfully' });
     } catch (error) {
         res.status(400).json({ error: error.message });

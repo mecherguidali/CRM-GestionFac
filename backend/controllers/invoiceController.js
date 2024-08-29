@@ -116,12 +116,21 @@ exports.generateInvoicePDF = async (req, res) => {
     // Set the response to download the PDF
     res.setHeader('Content-disposition', `attachment; filename=invoice-${invoice.number}.pdf`);
     res.setHeader('Content-type', 'application/pdf');
-
+    if(invoice.client.person!=null){
+        res.setHeader('Content-disposition', `attachment; filename=invoice- ${invoice.client.person.nom} ${invoice.client.person.prenom} ${invoice.number}.pdf`);
+        res.setHeader('Content-type', 'application/pdf');
+       
+     }
+     if(invoice.client.entreprise!=null){
+        res.setHeader('Content-disposition', `attachment; filename=invoice- ${invoice.client.entreprise.nom}${invoice.number}.pdf`);
+        res.setHeader('Content-type', 'application/pdf');
+    
+     }
     // Pipe the PDF into the response
     doc.pipe(res);
 
     // Add the company logo
-    if (company.logo) {
+    if (company.logo!==null) {
       doc.image(company.logo, 50, 45, { width: 100 });
     } else {
       doc.text('Logo Placeholder', 50, 45, { width: 100 });

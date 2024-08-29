@@ -1,6 +1,7 @@
 const Client = require('../models/appmodel/Client');
 const Person = require('../models/appmodel/Person');
 const Entreprise = require('../models/appmodel/Entreprise');
+const Invoice = require('../models/appmodel/Invoice');
 
 // Create a new client
 exports.createClient = async (req, res) => {
@@ -109,8 +110,15 @@ exports.deleteClient = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const client = await Client.findByIdAndDelete(id);
+        const cl = await Invoice.find({ client: id });
 
+        if (cl.length > 0) {
+          return res.status(400).json({
+            message: 'Cannot delete client as it is associated with one or more invoices.'
+          });
+        }
+        const client = await Client.findByIdAndDelete(id);
+      
         if (!client) return res.status(404).json({ message: 'Client not found' });
 
         if (client.type === 'Entreprise' && client.entreprise) {
