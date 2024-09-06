@@ -7,8 +7,9 @@ const invoiceController = require('../controllers/invoiceController');
 router.post('/', invoiceController.createInvoice);
 
 // Get all invoices with optional filtering
-// http://localhost:3000/api/invoices?type=Proforma
-router.get('/', invoiceController.getInvoices);
+// /api/invoices/60c72b2f9b1e8b001f3b1d3c
+// GET /api/invoices/60c72b2f9b1e8b001f3b1d3c?type=Standard&status=Brouillon
+router.get('/:createdBy', invoiceController.getInvoices);
 
 // Convert Proforma to Facture
 router.post('/convert-to-facture/:id', invoiceController.convertProformaToFacture);
@@ -20,7 +21,8 @@ router.put('/:id', invoiceController.updateInvoice);
 router.delete('/:id', invoiceController.deleteInvoice);
 // Route to update payment status
 router.post('/pay/:id', invoiceController.updatePaymentStatus);
-
+// Route to get an invoice by its ID
+router.get('/getbyid/:id', invoiceController.getInvoiceById);
 // Route to generate PDF for an invoice
 router.get('/export-pdf/:id/:createdBy', invoiceController.generateInvoicePDF);
 

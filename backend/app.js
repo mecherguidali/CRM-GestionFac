@@ -17,6 +17,7 @@ const Currency = require('./routes/currencyRoutes.js');
 const taxRoutes = require('./routes/TaxeRoutes.js');
 const companySettingRoutes = require('./routes/EntrepriseSettingRoutes.js');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+const payment = require('./routes/PaymentRoutes.js');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 var cors = require('cors');
@@ -57,3 +58,4 @@ app.use('/api/currency', Currency);
 app.use('/api/companysetting', companySettingRoutes);
 app.use('/api/taxes', taxRoutes);
 app.use('/api/invoices', invoiceRoutes);
+app.use('/api/payments', payment);

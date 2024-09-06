@@ -4,6 +4,7 @@ const Company = require('../models/coreModel/EntrepriseSetting');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
 const { DiffieHellmanGroup } = require('crypto');
 // Create Invoice
 exports.createInvoice = async (req, res) => {
@@ -39,9 +40,13 @@ exports.createInvoice = async (req, res) => {
 // Get all invoices (with optional filtering by type and status)
 exports.getInvoices = async (req, res) => {
   try {
-    const { type, status } = req.query; // Query parameters to filter by type and status
+    const { type, status } = req.query; // Query parameters for filtering by type and status
+    const { createdBy } = req.params;   // Get createdBy from the request parameters
+
+    // Initialize filter object
     let filter = {};
 
+    // Add filters based on query params
     if (type) {
       filter.type = type; // Filter by 'Standard' or 'Proforma'
     }
@@ -50,47 +55,89 @@ exports.getInvoices = async (req, res) => {
       filter.status = status; // Optionally filter by invoice status
     }
 
+    // Add filter for createdBy if present in the request params
+    if (createdBy) {
+      filter.createdBy = createdBy; // Filter by the creator's ID
+    }
+
+    // Find invoices with applied filters and populate references
     const invoices = await Invoice.find(filter)
       .populate('client')
       .populate('currency')
       .populate('tax');
 
+    // Return the filtered invoices in the response
     res.status(200).json(invoices);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching invoices', error });
   }
 };
 
+// Get a single invoice by its ID
+exports.getInvoiceById = async (req, res) => {
+  try {
+    const { id } = req.params;  // Get the invoice ID from the request parameters
+
+    // Find the invoice by ID and populate related fields (client, currency, tax)
+    const invoice = await Invoice.findById(id)
+      .populate('client')
+      .populate('currency')
+      .populate('tax');
+
+    // If the invoice is not found, return a 404 error
+    if (!invoice) {
+      return res.status(404).json({ message: 'Invoice not found' });
+    }
+
+    // Return the invoice details in the response
+    res.status(200).json(invoice);
+  } catch (error) {
+    // Handle any errors that occur during the query
+    res.status(500).json({ message: 'Error fetching invoice', error });
+  }
+};
+
 // Convert Proforma to Facture
+
 exports.convertProformaToFacture = async (req, res) => {
   try {
     const { id } = req.params;
 
     // Find the Proforma invoice
     const proformaInvoice = await Invoice.findById(id);
-    if (!proformaInvoice || proformaInvoice.type !== 'Proforma') {
-      return res.status(404).json({ message: 'Proforma invoice not found or already converted' });
+    if (!proformaInvoice) {
+      return res.status(404).json({ message: 'Proforma invoice not found' });
+    }
+
+    if (proformaInvoice.type !== 'Proforma') {
+      return res.status(400).json({ message: 'This invoice is not a Proforma invoice or has already been converted.' });
     }
 
     // Update the Proforma invoice to mark it as converted
     proformaInvoice.isConverted = true;
     await proformaInvoice.save();
 
+    // Remove system-generated fields that should not be copied over
+   // const { _id, type, isConverted, createdAt, updatedAt, ...rest } = proformaInvoice.toObject();
+
     // Create a new Facture invoice with the same details
     const factureInvoice = new Invoice({
-      ...proformaInvoice.toObject(),
-      _id: mongoose.Types.ObjectId(), // Generate a new ObjectId for the new invoice
+      ...proformaInvoice.toObject(), // Copy over the remaining fields
+      _id: new mongoose.Types.ObjectId(), // Generate a new ObjectId for the new invoice
       type: 'Standard', // Change the type to Standard (Facture)
       isConverted: false, // Reset the isConverted field for the new invoice
     });
 
     await factureInvoice.save();
 
-    res.status(201).json({ message: 'Proforma invoice converted to Facture', factureInvoice });
+    res.status(201).json({ message: 'Proforma invoice converted to Facture successfully', factureInvoice });
+
   } catch (error) {
+    console.error('Error converting Proforma invoice to Facture:', error);
     res.status(500).json({ message: 'Error converting Proforma invoice to Facture', error });
   }
 };
+
 
 // Update Invoice
 exports.updateInvoice = async (req, res) => {
