@@ -28,7 +28,7 @@ exports.getDepenses = async (req, res) => {
 
   try {
     const filter = createdBy ? { createdBy } : {};
-    const depenses = await Depense.find(filter).populate('DepenseCategory');
+    const depenses = await Depense.find(filter).populate('depenseCategory');
     res.status(200).json(depenses);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching depenses', error });
