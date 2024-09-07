@@ -54,3 +54,52 @@ exports.getPaymentsForInvoice = async (req, res) => {
       res.status(500).json({ message: 'Error fetching payment history', error });
     }
   };
+
+  exports.updatePayment = async (req, res) => {
+    try {
+      const { amount, method, status } = req.body;
+      const payment = await Payment.findByIdAndUpdate(
+        req.params.id,
+        { amount, method, status },
+        { new: true }
+      );
+      if (!payment) return res.status(404).json({ message: 'Payment not found' });
+      res.status(200).json(payment);
+    } catch (error) {
+      res.status(500).json({ message: 'Error updating payment', error });
+    }
+  };
+  
+  // Delete a Payment
+  exports.deletePayment = async (req, res) => {
+    try {
+      const payment = await Payment.findByIdAndDelete(req.params.id);
+      if (!payment) return res.status(404).json({ message: 'Payment not found' });
+      res.status(200).json({ message: 'Payment deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment', error });
+    }
+  };
+
+// Get all payments by createdBy
+exports.getAllPaymentsByCreatedBy = async (req, res) => {
+  try {
+    const { createdBy } = req.params;
+    const payments = await Payment.find({ createdBy })
+      .exec();
+    res.status(200).json(payments);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching payments', error });
+  }
+};
+// Get a payment by paymentId
+exports.getPaymentById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const payment = await Payment.findById(id).populate.exec();
+    if (!payment) return res.status(404).json({ message: 'Payment not found' });
+    res.status(200).json(payment);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching payment', error });
+  }
+};
